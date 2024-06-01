@@ -1,8 +1,8 @@
 import kaplay from "kaplay";
 
 const k = kaplay({
-  width: 640,
-  height: 360,
+  width: 640 * 4,
+  height: 360 * 4,
   letterbox: true,
   global: true,
 });
@@ -41,9 +41,9 @@ async function main() {
     k.fixed(),
   ]);
 
-  k.setGravity(2400);
+  k.setGravity(3000);
 
-  const map = k.add([k.sprite("level-1"), k.pos(), k.scale(3)]);
+  const map = k.add([k.sprite("level-1"), k.pos(0, -50), k.scale(8)]);
 
   for (const collider of level1Colliders) {
     map.add([
@@ -57,14 +57,14 @@ async function main() {
 
   const player = k.add([
     k.sprite("spritesheet", { anim: "kirbIdle" }),
-    k.area(),
-    k.body(),
+    k.area({ shape: new k.Rect(k.vec2(0, 1.5), 10, 12) }),
+    k.body({ jumpForce: 1000 }),
     k.anchor("center"),
     k.pos(k.center()),
     k.doubleJump(10),
-    k.scale(3),
+    k.scale(8),
     {
-      speed: 300,
+      speed: 1000,
     },
   ]);
 
@@ -86,13 +86,15 @@ async function main() {
     }
   });
 
+  k.camScale(k.vec2(1));
+
   player.onUpdate(() => {
-    if (map.pos.x + 320 > player.pos.x) {
-      k.camPos(map.pos.x + 320, 300);
+    if (map.pos.x + 1280 > player.pos.x) {
+      k.camPos(map.pos.x + 1280, 700);
       return;
     }
 
-    k.camPos(player.pos.x, 300);
+    k.camPos(player.pos.x, 700);
   });
 }
 
