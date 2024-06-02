@@ -1,4 +1,5 @@
 import kaplay from "kaplay";
+import { makeCameraSystem } from "./systems/camera";
 
 const k = kaplay({
   width: 640 * 4,
@@ -86,16 +87,11 @@ async function main() {
     }
   });
 
-  k.camScale(k.vec2(1));
-
-  player.onUpdate(() => {
-    if (map.pos.x + 1280 > player.pos.x) {
-      k.camPos(map.pos.x + 1280, 700);
-      return;
-    }
-
-    k.camPos(player.pos.x, 700);
-  });
+  const camera = makeCameraSystem(k);
+  camera.zoomCam(1.5);
+  camera.setVerticalLevel(700);
+  camera.setLeftBound(map.pos.x + 860);
+  camera.setTarget(player);
 }
 
 main();
