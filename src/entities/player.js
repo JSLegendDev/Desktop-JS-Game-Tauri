@@ -6,12 +6,20 @@ export function makePlayer(k) {
     k.anchor("center"),
     k.pos(k.center()),
     k.doubleJump(10),
-    k.scale(8),
+    k.scale(4),
     {
-      speed: 1000,
+      speed: 600,
       setControls() {
         this.onKeyPress((key) => {
-          if (key === "space") this.doubleJump();
+          switch (key) {
+            case "x":
+              this.doubleJump();
+              break;
+            case "z":
+              this.trigger("inhale");
+              break;
+            default:
+          }
         });
 
         this.onKeyDown((key) => {
@@ -26,6 +34,29 @@ export function makePlayer(k) {
               break;
             default:
           }
+        });
+
+        this.onKeyRelease(() => {
+          this.play("kirbIdle");
+          this.trigger("cancel-inhale");
+        });
+      },
+      setEvents() {
+        this.on("inhale", () => {
+          this.play("kirbInhaling");
+          const inhaleZone = this.add([
+            k.area({ shape: new k.Rect(k.vec2(0, -5), 30, 15) }),
+            k.anchor("topleft"),
+            "inhale-zone",
+          ]);
+          inhaleZone.onUpdate(() => {
+            inhaleZone.pos = this.flipX ? k.vec2(-30, -5) : k.vec2(0, -5);
+          });
+        });
+
+        this.on("cancel-inhale", () => {
+          const inhaleZone = k.get("inhale-zone", { recursive: true })[0];
+          if (inhaleZone) k.destroy(inhaleZone);
         });
       },
     },

@@ -1,11 +1,13 @@
 import kaplay from "kaplay";
 import { makeCameraSystem } from "./systems/camera";
+import { makePlayer } from "./entities/player";
 
 const k = kaplay({
-  width: 640 * 4,
-  height: 360 * 4,
+  width: 1280,
+  height: 720,
   letterbox: true,
   global: true,
+  scale: 4,
 });
 
 async function main() {
@@ -44,7 +46,7 @@ async function main() {
 
   k.setGravity(3000);
 
-  const map = k.add([k.sprite("level-1"), k.pos(0, -50), k.scale(8)]);
+  const map = k.add([k.sprite("level-1"), k.pos(0, -50), k.scale(4)]);
 
   for (const collider of level1Colliders) {
     map.add([
@@ -56,41 +58,14 @@ async function main() {
     ]);
   }
 
-  const player = k.add([
-    k.sprite("spritesheet", { anim: "kirbIdle" }),
-    k.area({ shape: new k.Rect(k.vec2(0, 1.5), 10, 12) }),
-    k.body({ jumpForce: 1000 }),
-    k.anchor("center"),
-    k.pos(k.center()),
-    k.doubleJump(10),
-    k.scale(8),
-    {
-      speed: 1000,
-    },
-  ]);
-
-  player.onKeyPress((key) => {
-    if (key === "space") player.doubleJump();
-  });
-
-  player.onKeyDown((key) => {
-    switch (key) {
-      case "left":
-        player.flipX = true;
-        player.move(-player.speed, 0);
-        break;
-      case "right":
-        player.flipX = false;
-        player.move(player.speed, 0);
-        break;
-      default:
-    }
-  });
+  const player = k.add(makePlayer(k));
+  player.setControls();
+  player.setEvents();
 
   const camera = makeCameraSystem(k);
-  camera.zoomCam(1.5);
-  camera.setVerticalLevel(700);
-  camera.setLeftBound(map.pos.x + 860);
+  camera.zoomCam(1.2);
+  camera.setVerticalLevel(300);
+  camera.setLeftBound(map.pos.x + 560);
   camera.setTarget(player);
 }
 

@@ -20,8 +20,8 @@
     "windows": [
       {
         "title": "kirby-like",
-        "width": 640,
-        "height": 360
+        "width": 1280,
+        "height": 720
       }
     ],
     "security": {
