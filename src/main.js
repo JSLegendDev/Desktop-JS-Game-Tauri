@@ -37,6 +37,8 @@ async function main() {
   });
 
   k.loadSprite("level-1", "./maps/level-1.png");
+  k.loadSprite("level-1-background", "./maps/level-1-background.png");
+  k.loadSprite("level-1-clouds", "./maps/level-1-clouds.png");
 
   k.add([
     k.rect(k.width(), k.height()),
@@ -46,7 +48,23 @@ async function main() {
 
   k.setGravity(3000);
 
-  const map = k.add([k.sprite("level-1"), k.pos(0, -50), k.scale(4)]);
+  const map = k.add([k.pos(0, -50), k.scale(4)]);
+
+  const background = map.add([
+    k.sprite("level-1-background"),
+    k.pos(),
+    // k.fixed(),
+  ]);
+  background.onUpdate(() => {
+    background.pos.x = -k.camPos().x / 50;
+  });
+
+  const clouds = map.add([k.sprite("level-1-clouds"), k.pos()]);
+  clouds.onUpdate(() => {
+    clouds.pos.x += 3 * k.dt();
+  });
+
+  const levelLayout = map.add([k.sprite("level-1")]);
 
   for (const collider of level1Colliders) {
     map.add([
