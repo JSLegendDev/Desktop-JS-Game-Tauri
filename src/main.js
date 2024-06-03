@@ -56,12 +56,15 @@ async function main() {
     // k.fixed(),
   ]);
   background.onUpdate(() => {
-    background.pos.x = -k.camPos().x / 50;
+    background.pos.x = -k.camPos().x / 40;
   });
 
   const clouds = map.add([k.sprite("level-1-clouds"), k.pos()]);
   clouds.onUpdate(() => {
-    clouds.pos.x += 3 * k.dt();
+    clouds.pos.x += 5 * k.dt();
+    if (clouds.pos.x > 700) {
+      clouds.pos.x = -500; // put the clouds far back so it scrolls again through the level
+    }
   });
 
   const levelLayout = map.add([k.sprite("level-1")]);
