@@ -207,9 +207,44 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":6,
+         "name":"positions",
+         "objects":[
+                {
+                 "height":0,
+                 "id":10,
+                 "name":"player",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":32,
+                 "y":112
+                }, 
+                {
+                 "height":0,
+                 "id":12,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "type":"flame",
+                 "visible":true,
+                 "width":0,
+                 "x":80,
+                 "y":112
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":6,
- "nextobjectid":10,
+ "nextlayerid":7,
+ "nextobjectid":13,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

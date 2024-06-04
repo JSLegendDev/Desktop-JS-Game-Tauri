@@ -1,6 +1,7 @@
 import kaplay from "kaplay";
 import { makeCameraSystem } from "./systems/camera";
 import { makePlayer } from "./entities/player";
+import { SCALE_FACTOR } from "./constants";
 
 const k = kaplay({
   width: 1280,
@@ -13,10 +14,15 @@ const k = kaplay({
 async function main() {
   const level1Data = await (await fetch("./maps/level-1.json")).json();
   const level1Colliders = [];
+  const level1Positions = [];
   for (const layer of level1Data.layers) {
     if (layer.name === "colliders") {
       level1Colliders.push(...layer.objects);
-      break;
+      continue;
+    }
+
+    if (layer.name === "positions") {
+      level1Positions.push(...layer.objects);
     }
   }
 
@@ -48,13 +54,9 @@ async function main() {
 
   k.setGravity(3000);
 
-  const map = k.add([k.pos(0, -50), k.scale(4)]);
+  const map = k.add([k.pos(0, -50), k.scale(SCALE_FACTOR)]);
 
-  const background = map.add([
-    k.sprite("level-1-background"),
-    k.pos(),
-    // k.fixed(),
-  ]);
+  const background = map.add([k.sprite("level-1-background"), k.pos()]);
   background.onUpdate(() => {
     background.pos.x = -k.camPos().x / 40;
   });
@@ -67,7 +69,7 @@ async function main() {
     }
   });
 
-  const levelLayout = map.add([k.sprite("level-1")]);
+  map.add([k.sprite("level-1")]);
 
   for (const collider of level1Colliders) {
     map.add([
@@ -79,9 +81,21 @@ async function main() {
     ]);
   }
 
+  // we create the player as an independent game obj instead of child of map
+  // because of kaplay's physics system being buggy
   const player = k.add(makePlayer(k));
   player.setControls();
   player.setEvents();
+
+  for (const position of level1Positions) {
+    if (position.name === "player") {
+      player.pos = k.vec2(
+        (position.x + map.pos.x) * SCALE_FACTOR, // need to calculate position relative to map since player is not its child
+        (position.y + map.pos.y) * SCALE_FACTOR
+      );
+      break;
+    }
+  }
 
   const camera = makeCameraSystem(k);
   camera.zoomCam(1.2);

@@ -1,12 +1,14 @@
+import { SCALE_FACTOR } from "../constants";
+
 export function makePlayer(k) {
   return k.make([
     k.sprite("spritesheet", { anim: "kirbIdle" }),
     k.area({ shape: new k.Rect(k.vec2(0, 1.5), 10, 12) }),
     k.body({ jumpForce: 1000 }),
     k.anchor("center"),
-    k.pos(k.center()),
+    k.pos(),
     k.doubleJump(10),
-    k.scale(4),
+    k.scale(SCALE_FACTOR),
     {
       speed: 600,
       setControls() {
@@ -36,9 +38,11 @@ export function makePlayer(k) {
           }
         });
 
-        this.onKeyRelease(() => {
-          this.play("kirbIdle");
-          this.trigger("cancel-inhale");
+        this.onKeyRelease((key) => {
+          if (key === "z") {
+            this.trigger("cancel-inhale");
+            this.play("kirbIdle");
+          }
         });
       },
       setEvents() {
