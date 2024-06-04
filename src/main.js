@@ -2,6 +2,7 @@ import kaplay from "kaplay";
 import { makeCameraSystem } from "./systems/camera";
 import { makePlayer } from "./entities/player";
 import { SCALE_FACTOR } from "./constants";
+import { writeTextFile, BaseDirectory, readTextFile } from "@tauri-apps/api/fs";
 
 const k = kaplay({
   width: 1280,
@@ -12,6 +13,12 @@ const k = kaplay({
 });
 
 async function main() {
+  await writeTextFile("save.json", '{"name": "kirby-like"}', {
+    dir: BaseDirectory.AppData,
+  });
+  console.log(
+    JSON.parse(await readTextFile("save.json", { dir: BaseDirectory.AppData }))
+  );
   const level1Data = await (await fetch("./maps/level-1.json")).json();
   const level1Colliders = [];
   const level1Positions = [];

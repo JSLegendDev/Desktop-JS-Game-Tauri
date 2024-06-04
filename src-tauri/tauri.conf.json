@@ -15,6 +15,11 @@
       "shell": {
         "all": false,
         "open": true
+      },
+      "fs": {
+        "readFile": true,
+        "writeFile": true,
+        "scope": ["$APPDATA/*"]
       }
     },
     "windows": [
@@ -31,7 +36,7 @@
       "shortDescription": "A Kirby-like platformer game made in JavaScript",
       "active": true,
       "targets": "all",
-      "identifier": "com.jslegend.dev",
+      "identifier": "kirby.like.game",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
