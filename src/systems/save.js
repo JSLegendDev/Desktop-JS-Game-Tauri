@@ -5,15 +5,7 @@ import {
   exists,
 } from "@tauri-apps/api/fs";
 
-async function makeSaveSystem(savefileName) {
-  const saveExists = await exists(savefileName, { dir: BaseDirectory.AppData });
-
-  if (!saveExists) {
-    await writeTextFile(savefileName, JSON.stringify({}), {
-      dir: BaseDirectory.AppData,
-    });
-  }
-
+function makeSaveSystem(savefileName) {
   return {
     data: {},
     async save() {
@@ -29,4 +21,4 @@ async function makeSaveSystem(savefileName) {
   };
 }
 
-export const saveSystem = await makeSaveSystem("save.json");
+export const saveSystem = makeSaveSystem("save.json");

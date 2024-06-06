@@ -9,16 +9,32 @@ export function makePlayer(k) {
     k.pos(),
     k.scale(SCALE_FACTOR),
     {
+      isDead: false,
       speed: 600,
       setControls() {
-        this.keyController = this.onKeyPress((key) => {
-          if (key === "space") {
+        this.keyControllers = [];
+        this.keyControllers.push(
+          this.onKeyPress((key) => {
+            if (key === "space") {
+              this.jump();
+            }
+          })
+        );
+
+        this.keyControllers.push(
+          k.onClick(() => {
             this.jump();
-          }
-        });
+          })
+        );
+
+        this.keyControllers.push(
+          k.onGamepadButtonPress("south", () => {
+            this.jump();
+          })
+        );
       },
       disableControls() {
-        this.keyController.cancel();
+        this.keyControllers.forEach((keyController) => keyController.cancel());
       },
     },
   ]);

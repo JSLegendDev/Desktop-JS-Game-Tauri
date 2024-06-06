@@ -2,6 +2,8 @@ import { saveSystem } from "../systems/save";
 import { computeRank } from "../utils";
 
 export async function makeScoreBox(k, pos, score) {
+  saveSystem.load();
+
   if (score > saveSystem.data.maxScore) {
     saveSystem.data.maxScore = score;
     await saveSystem.save();
@@ -18,19 +20,31 @@ export async function makeScoreBox(k, pos, score) {
   ]);
 
   container.add([
-    k.text(`Your score: ${score}`),
+    k.text(`Your best score : ${saveSystem.data.maxScore}`),
     k.color(k.Color.fromHex("#14638e")),
     k.area(),
-    k.anchor("center"),
-    k.pos(0, -150),
+    k.pos(-220, -200),
   ]);
 
   container.add([
-    k.text(computeRank(score), { size: 128 }),
+    k.text(`Your score: ${score}`),
     k.color(k.Color.fromHex("#14638e")),
     k.area(),
-    k.anchor("center"),
-    k.pos(0, 50),
+    k.pos(-220, -150),
+  ]);
+
+  container.add([
+    k.text(`Your current rank : ${computeRank(score)}`),
+    k.color(k.Color.fromHex("#14638e")),
+    k.area(),
+    k.pos(-220, 50),
+  ]);
+
+  container.add([
+    k.text(`Your best rank : ${computeRank(saveSystem.data.maxScore)}`),
+    k.color(k.Color.fromHex("#14638e")),
+    k.area(),
+    k.pos(-220, 0),
   ]);
 
   const restartBtn = container.add([
@@ -53,6 +67,10 @@ export async function makeScoreBox(k, pos, score) {
   });
 
   k.onKeyPress("space", () => {
+    k.go("main");
+  });
+
+  k.onGamepadButtonPress("south", () => {
     k.go("main");
   });
 
