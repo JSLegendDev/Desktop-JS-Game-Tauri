@@ -62,17 +62,16 @@ export async function makeScoreBox(k, pos, score) {
     k.anchor("center"),
   ]);
 
-  restartBtn.onClick(() => {
+  function goToGame() {
+    k.play("confirm");
     k.go("main");
-  });
+  }
 
-  k.onKeyPress("space", () => {
-    k.go("main");
-  });
+  restartBtn.onClick(goToGame);
 
-  k.onGamepadButtonPress("south", () => {
-    k.go("main");
-  });
+  k.onKeyPress("space", goToGame);
+
+  k.onGamepadButtonPress("south", goToGame);
 
   return container;
 }

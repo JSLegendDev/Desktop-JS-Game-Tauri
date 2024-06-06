@@ -24,6 +24,9 @@ async function game() {
   k.loadSprite("obstacles", "./maps/obstacles.png");
   k.loadSprite("background", "./maps/background.png");
   k.loadSprite("clouds", "./maps/clouds.png");
+  k.loadSound("jump", "./jump.wav");
+  k.loadSound("hurt", "./hurt.wav");
+  k.loadSound("confirm", "./confirm.wav");
 
   async function startScene() {
     k.add([
@@ -55,9 +58,6 @@ async function game() {
       await saveSystem.load();
     }
 
-    console.log("max score : ", saveSystem.data.maxScore);
-    console.log("best rank : ", computeRank(saveSystem.data.maxScore));
-
     const player = k.add(makePlayer(k));
     player.pos = k.vec2(k.center().x - 350, k.center().y + 56);
 
@@ -76,17 +76,16 @@ async function game() {
       k.anchor("center"),
     ]);
 
-    playBtn.onClick(() => {
+    function goToGame() {
+      k.play("confirm");
       k.go("main");
-    });
+    }
 
-    k.onKeyPress("space", () => {
-      k.go("main");
-    });
+    playBtn.onClick(goToGame);
 
-    k.onGamepadButtonPress("south", () => {
-      k.go("main");
-    });
+    k.onKeyPress("space", goToGame);
+
+    k.onGamepadButtonPress("south", goToGame);
   }
 
   async function mainScene() {
@@ -158,6 +157,7 @@ async function game() {
     player.setControls();
     player.onCollide("obstacle", async () => {
       if (player.isDead) return;
+      k.play("hurt");
       platforms.speed = 0;
       player.disableControls();
       k.add(await makeScoreBox(k, k.center(), score));

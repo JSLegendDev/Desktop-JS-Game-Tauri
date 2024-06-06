@@ -16,6 +16,7 @@ export function makePlayer(k) {
         this.keyControllers.push(
           this.onKeyPress((key) => {
             if (key === "space") {
+              k.play("jump");
               this.jump();
             }
           })
@@ -23,12 +24,14 @@ export function makePlayer(k) {
 
         this.keyControllers.push(
           k.onClick(() => {
+            k.play("jump");
             this.jump();
           })
         );
 
         this.keyControllers.push(
           k.onGamepadButtonPress("south", () => {
+            k.play("jump");
             this.jump();
           })
         );
