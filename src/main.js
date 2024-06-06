@@ -2,12 +2,14 @@ import kaplay from "kaplay";
 import { makePlayer } from "./entities/player";
 import { SCALE_FACTOR } from "./constants";
 import { makeScoreBox } from "./ui/scoreBox";
+import { makeSaveSystem } from "./systems/save";
 
 const k = kaplay({
   width: 1280,
   height: 720,
   letterbox: true,
   global: true,
+  scale: 2,
 });
 
 const level1Data = await (await fetch("./maps/level-1.json")).json();
@@ -22,9 +24,13 @@ k.loadSprite("level-1-background", "./maps/level-1-background.png");
 k.loadSprite("level-1-clouds", "./maps/level-1-clouds.png");
 
 async function main() {
-  let score = 0;
+  const saveSystem = makeSaveSystem("save.json");
+
+  saveSystem.data.score = 0;
+
   const level1Colliders = [];
   const level1Positions = [];
+
   for (const layer of level1Data.layers) {
     if (layer.name === "colliders") {
       level1Colliders.push(...layer.objects);
@@ -71,7 +77,7 @@ async function main() {
   });
 
   k.loop(1, () => {
-    score += 1;
+    saveSystem.data.score += 1;
   });
 
   for (const collider of level1Colliders) {
@@ -92,7 +98,8 @@ async function main() {
   player.onCollide("obstacle", () => {
     platforms.speed = 0;
     player.disableControls();
-    k.add(makeScoreBox(k, k.center(), score));
+    k.add(makeScoreBox(k, k.center(), saveSystem.data.score));
+    saveSystem.save();
   });
 
   k.camScale(k.vec2(1.2));
