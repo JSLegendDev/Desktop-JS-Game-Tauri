@@ -20,7 +20,7 @@ export function makeScoreBox(k, pos, score) {
   ]);
 
   container.add([
-    k.text(computeRank(score), { size: 256 }),
+    k.text(computeRank(score), { size: 128 }),
     k.color(k.Color.fromHex("#14638e")),
     k.area(),
     k.anchor("center"),

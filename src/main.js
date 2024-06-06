@@ -8,7 +8,6 @@ const k = kaplay({
   height: 720,
   letterbox: true,
   global: true,
-  scale: 4,
 });
 
 const level1Data = await (await fetch("./maps/level-1.json")).json();
