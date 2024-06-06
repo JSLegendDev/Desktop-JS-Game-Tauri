@@ -2,7 +2,8 @@ import kaplay from "kaplay";
 import { makePlayer } from "./entities/player";
 import { SCALE_FACTOR } from "./constants";
 import { makeScoreBox } from "./ui/scoreBox";
-import { makeSaveSystem } from "./systems/save";
+import { computeRank } from "./utils";
+import { saveSystem } from "./systems/save";
 
 const k = kaplay({
   width: 1280,
@@ -12,35 +13,81 @@ const k = kaplay({
   scale: 2,
 });
 
-const level1Data = await (await fetch("./maps/level-1.json")).json();
+const level1Data = await (await fetch("./maps/collidersData.json")).json();
 
 k.loadSprite("spritesheet", "./spritesheet.png", {
   sliceX: 18,
   sliceY: 5,
 });
 
-k.loadSprite("level-1", "./maps/level-1.png");
-k.loadSprite("level-1-background", "./maps/level-1-background.png");
-k.loadSprite("level-1-clouds", "./maps/level-1-clouds.png");
+k.loadSprite("obstacles", "./maps/obstacles.png");
+k.loadSprite("background", "./maps/background.png");
+k.loadSprite("clouds", "./maps/clouds.png");
 
-async function main() {
-  const saveSystem = makeSaveSystem("save.json");
+async function startScene() {
+  k.add([
+    k.rect(k.width(), k.height()),
+    k.color(k.Color.fromHex("#d7f2f7")),
+    k.fixed(),
+  ]);
 
-  saveSystem.data.score = 0;
+  const map = k.add([
+    k.sprite("background"),
+    k.pos(0, 0),
+    k.scale(SCALE_FACTOR),
+  ]);
 
-  const level1Colliders = [];
-  const level1Positions = [];
-
-  for (const layer of level1Data.layers) {
-    if (layer.name === "colliders") {
-      level1Colliders.push(...layer.objects);
-      continue;
+  const clouds = map.add([k.sprite("clouds"), k.pos(), { speed: 5 }]);
+  clouds.onUpdate(() => {
+    clouds.move(clouds.speed, 0);
+    if (clouds.pos.x > 700) {
+      clouds.pos.x = -500; // put the clouds far back so it scrolls again through the level
     }
+  });
 
-    if (layer.name === "positions") {
-      level1Positions.push(...layer.objects);
-    }
+  map.add([k.sprite("obstacles"), k.pos(), k.area(), { speed: 100 }]);
+
+  await saveSystem.load();
+  if (!saveSystem.data.maxScore) {
+    saveSystem.data.maxScore = 0;
+    await saveSystem.save();
+    await saveSystem.load();
   }
+
+  console.log("max score : ", saveSystem.data.maxScore);
+  console.log("best rank : ", computeRank(saveSystem.data.maxScore));
+
+  const player = k.add(makePlayer(k));
+  player.pos = k.vec2(k.center().x - 350, k.center().y + 56);
+
+  const playBtn = k.add([
+    k.rect(200, 50, { radius: 3 }),
+    k.color(k.Color.fromHex("#14638e")),
+    k.area(),
+    k.anchor("center"),
+    k.pos(k.center().x + 30, k.center().y + 60),
+  ]);
+
+  playBtn.add([
+    k.text("Play", { size: 24 }),
+    k.color(k.Color.fromHex("#d7f2f7")),
+    k.area(),
+    k.anchor("center"),
+  ]);
+
+  playBtn.onClick(() => {
+    k.go("main");
+  });
+
+  k.onKeyPress("space", () => {
+    k.go("main");
+  });
+}
+
+async function mainScene() {
+  let score = 0;
+
+  const level1Colliders = level1Data.data;
 
   k.add([
     k.rect(k.width(), k.height()),
@@ -52,9 +99,9 @@ async function main() {
 
   const map = k.add([k.pos(0, -50), k.scale(SCALE_FACTOR)]);
 
-  map.add([k.sprite("level-1-background"), k.pos()]);
+  map.add([k.sprite("background"), k.pos()]);
 
-  const clouds = map.add([k.sprite("level-1-clouds"), k.pos(), { speed: 5 }]);
+  const clouds = map.add([k.sprite("clouds"), k.pos(), { speed: 5 }]);
   clouds.onUpdate(() => {
     clouds.move(clouds.speed, 0);
     if (clouds.pos.x > 700) {
@@ -63,7 +110,7 @@ async function main() {
   });
 
   const platforms = map.add([
-    k.sprite("level-1"),
+    k.sprite("obstacles"),
     k.pos(),
     k.area(),
     { speed: 100 },
@@ -77,7 +124,7 @@ async function main() {
   });
 
   k.loop(1, () => {
-    saveSystem.data.score += 1;
+    score += 1;
   });
 
   for (const collider of level1Colliders) {
@@ -91,30 +138,32 @@ async function main() {
     ]);
   }
 
+  k.add([
+    k.rect(k.width(), 50),
+    k.pos(0, 1000),
+    k.area(),
+    k.fixed(),
+    "obstacle",
+  ]);
+
   // we create the player as an independent game obj instead of child of map
   // because of kaplay's physics system being buggy
   const player = k.add(makePlayer(k));
+  player.pos = k.vec2(600, 250);
   player.setControls();
-  player.onCollide("obstacle", () => {
+  player.onCollide("obstacle", async () => {
     platforms.speed = 0;
     player.disableControls();
-    k.add(makeScoreBox(k, k.center(), saveSystem.data.score));
-    saveSystem.save();
+    k.add(await makeScoreBox(k, k.center(), score));
   });
 
   k.camScale(k.vec2(1.2));
   player.onUpdate(() => {
     k.camPos(player.pos.x, 400);
   });
-
-  for (const position of level1Positions) {
-    if (position.name === "player") {
-      player.pos = k.vec2(600, 300);
-      continue;
-    }
-  }
 }
 
-k.scene("main", main);
+k.scene("start", startScene);
+k.scene("main", mainScene);
 
-k.go("main");
+k.go("start");

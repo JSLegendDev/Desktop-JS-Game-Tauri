@@ -1,6 +1,12 @@
+import { saveSystem } from "../systems/save";
 import { computeRank } from "../utils";
 
-export function makeScoreBox(k, pos, score) {
+export async function makeScoreBox(k, pos, score) {
+  if (score > saveSystem.data.maxScore) {
+    saveSystem.data.maxScore = score;
+    await saveSystem.save();
+  }
+
   const container = k.make([
     k.rect(500, 500),
     k.pos(pos),
@@ -46,7 +52,7 @@ export function makeScoreBox(k, pos, score) {
     k.go("main");
   });
 
-  k.onKeyPress("enter", () => {
+  k.onKeyPress("space", () => {
     k.go("main");
   });
 

@@ -1,6 +1,19 @@
-import { writeTextFile, readTextFile, BaseDirectory } from "@tauri-apps/api/fs";
+import {
+  writeTextFile,
+  readTextFile,
+  BaseDirectory,
+  exists,
+} from "@tauri-apps/api/fs";
 
-export function makeSaveSystem(savefileName) {
+async function makeSaveSystem(savefileName) {
+  const saveExists = await exists(savefileName, { dir: BaseDirectory.AppData });
+
+  if (!saveExists) {
+    await writeTextFile(savefileName, JSON.stringify({}), {
+      dir: BaseDirectory.AppData,
+    });
+  }
+
   return {
     data: {},
     async save() {
@@ -9,9 +22,11 @@ export function makeSaveSystem(savefileName) {
       });
     },
     async load() {
-      this.load = JSON.parse(
+      this.data = JSON.parse(
         await readTextFile(savefileName, { dir: BaseDirectory.AppData })
       );
     },
   };
 }
+
+export const saveSystem = await makeSaveSystem("save.json");
