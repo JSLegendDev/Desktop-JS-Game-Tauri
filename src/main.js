@@ -23,6 +23,7 @@ k.loadSprite("level-1-background", "./maps/level-1-background.png");
 k.loadSprite("level-1-clouds", "./maps/level-1-clouds.png");
 
 async function main() {
+  let score = 0;
   const level1Colliders = [];
   const level1Positions = [];
   for (const layer of level1Data.layers) {
@@ -70,6 +71,10 @@ async function main() {
     }
   });
 
+  k.loop(1, () => {
+    score += 1;
+  });
+
   for (const collider of level1Colliders) {
     platforms.add([
       k.area({
@@ -88,7 +93,7 @@ async function main() {
   player.onCollide("obstacle", () => {
     platforms.speed = 0;
     player.disableControls();
-    k.add(makeScoreBox(k, k.center(), "100"));
+    k.add(makeScoreBox(k, k.center(), score));
   });
 
   k.camScale(k.vec2(1.2));

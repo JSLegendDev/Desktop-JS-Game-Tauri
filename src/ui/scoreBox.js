@@ -1,3 +1,5 @@
+import { computeRank } from "../utils";
+
 export function makeScoreBox(k, pos, score) {
   const container = k.make([
     k.rect(500, 500),
@@ -15,6 +17,14 @@ export function makeScoreBox(k, pos, score) {
     k.area(),
     k.anchor("center"),
     k.pos(0, -150),
+  ]);
+
+  container.add([
+    k.text(computeRank(score), { size: 256 }),
+    k.color(k.Color.fromHex("#14638e")),
+    k.area(),
+    k.anchor("center"),
+    k.pos(0, 50),
   ]);
 
   const restartBtn = container.add([
