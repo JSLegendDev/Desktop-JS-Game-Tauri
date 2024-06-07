@@ -17,20 +17,21 @@ function makeSaveSystem(savefileName) {
       if (folderExists) return;
 
       await createDir("saveData", {
-        dir: "BaseDirectory.AppData",
+        dir: BaseDirectory.AppData,
         recursive: true,
       });
     },
     async save() {
-      await writeTextFile(
-        `.\\saveData\\${savefileName}`,
-        JSON.stringify(this.data)
-      );
+      await writeTextFile("save.json", JSON.stringify(this.data), {
+        dir: BaseDirectory.AppLocalData,
+      });
     },
     async load() {
       try {
         this.data = JSON.parse(
-          await readTextFile(`.\\saveData\\${savefileName}`)
+          await readTextFile("save.json", {
+            dir: BaseDirectory.AppLocalData,
+          })
         );
       } catch {
         this.data = {};

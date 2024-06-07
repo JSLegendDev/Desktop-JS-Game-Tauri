@@ -21,7 +21,11 @@
         "writeFile": true,
         "createDir": true,
         "exists": true,
-        "scope": ["$APPDATA/"]
+        "all": true,
+        "scope": ["$APPLOCALDATA/*"]
+      },
+      "path": {
+        "all": true
       }
     },
     "windows": [
@@ -38,7 +42,7 @@
       "shortDescription": "A desktop game made in JavaScript and Tauri",
       "active": true,
       "targets": "all",
-      "identifier": "kribygame",
+      "identifier": "kriby",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
