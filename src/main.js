@@ -51,6 +51,7 @@ async function game() {
 
     map.add([k.sprite("obstacles"), k.pos(), k.area(), { speed: 100 }]);
 
+    await saveSystem.createSaveDataFolder();
     await saveSystem.load();
     if (!saveSystem.data.maxScore) {
       saveSystem.data.maxScore = 0;
@@ -141,6 +142,14 @@ async function game() {
         "obstacle",
       ]);
     }
+
+    k.add([
+      k.rect(k.width(), 50),
+      k.pos(0, -100),
+      k.area(),
+      k.fixed(),
+      "obstacle",
+    ]);
 
     k.add([
       k.rect(k.width(), 50),

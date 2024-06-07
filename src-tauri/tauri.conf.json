@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "kirby-like",
+    "productName": "Kriby Desktop Game",
     "version": "0.0.1"
   },
   "tauri": {
@@ -19,13 +19,14 @@
       "fs": {
         "readFile": true,
         "writeFile": true,
+        "createDir": true,
         "exists": true,
-        "scope": ["$APPDATA/*"]
+        "scope": ["$APPDATA/"]
       }
     },
     "windows": [
       {
-        "title": "kirby-like",
+        "title": "Kriby Desktop Game",
         "width": 1280,
         "height": 720
       }
@@ -34,10 +35,10 @@
       "csp": null
     },
     "bundle": {
-      "shortDescription": "A Kirby-like platformer game made in JavaScript",
+      "shortDescription": "A desktop game made in JavaScript and Tauri",
       "active": true,
       "targets": "all",
-      "identifier": "kirby.like.game",
+      "identifier": "kribygame",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",

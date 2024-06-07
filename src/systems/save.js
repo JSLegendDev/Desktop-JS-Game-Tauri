@@ -2,21 +2,39 @@ import {
   writeTextFile,
   readTextFile,
   BaseDirectory,
+  createDir,
   exists,
 } from "@tauri-apps/api/fs";
 
 function makeSaveSystem(savefileName) {
   return {
     data: {},
-    async save() {
-      await writeTextFile(savefileName, JSON.stringify(this.data), {
+    async createSaveDataFolder() {
+      const folderExists = await exists("saveData", {
         dir: BaseDirectory.AppData,
       });
+
+      if (folderExists) return;
+
+      await createDir("saveData", {
+        dir: "BaseDirectory.AppData",
+        recursive: true,
+      });
+    },
+    async save() {
+      await writeTextFile(
+        `.\\saveData\\${savefileName}`,
+        JSON.stringify(this.data)
+      );
     },
     async load() {
-      this.data = JSON.parse(
-        await readTextFile(savefileName, { dir: BaseDirectory.AppData })
-      );
+      try {
+        this.data = JSON.parse(
+          await readTextFile(`.\\saveData\\${savefileName}`)
+        );
+      } catch {
+        this.data = {};
+      }
     },
   };
 }
