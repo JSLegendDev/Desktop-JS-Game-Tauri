@@ -24,6 +24,9 @@
         "all": true,
         "scope": ["$APPLOCALDATA/*"]
       },
+      "window": {
+        "setFullscreen": true
+      },
       "path": {
         "all": true
       }

@@ -4,6 +4,7 @@ import { SCALE_FACTOR } from "./constants";
 import { makeScoreBox } from "./ui/scoreBox";
 import { computeRank } from "./utils";
 import { saveSystem } from "./systems/save";
+import { appWindow } from "@tauri-apps/api/window";
 
 const k = kaplay({
   width: 1280,
@@ -14,6 +15,16 @@ const k = kaplay({
 });
 
 async function game() {
+  document.addEventListener("keydown", async (ev) => {
+    if (ev.code === "F11") {
+      if (await appWindow.isFullscreen()) {
+        await appWindow.setFullscreen(false);
+      } else {
+        await appWindow.setFullscreen(true);
+      }
+    }
+  });
+
   const level1Data = await (await fetch("./maps/collidersData.json")).json();
 
   k.loadSprite("spritesheet", "./spritesheet.png", {
