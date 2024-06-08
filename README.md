@@ -1,7 +1,7 @@
-# Tauri + React
+# Desktop Game made in JavaScript + Tauri
 
-This template should help get you started developing with Tauri and React in Vite.
+![game screenshot](./game.png)
 
-## Recommended IDE Setup
+Flappy bird style game made with the Kaplay library and Tauri. It features a basic save system where you best score is saved on disk.
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+Download for Windows here : https://jslegend.itch.io/kriby
