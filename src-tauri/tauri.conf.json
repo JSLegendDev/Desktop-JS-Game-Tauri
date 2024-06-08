@@ -19,16 +19,10 @@
       "fs": {
         "readFile": true,
         "writeFile": true,
-        "createDir": true,
-        "exists": true,
-        "all": true,
         "scope": ["$APPLOCALDATA/*"]
       },
       "window": {
         "setFullscreen": true
-      },
-      "path": {
-        "all": true
       }
     },
     "windows": [
