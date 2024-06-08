@@ -1,11 +1,10 @@
 import kaplay from "kaplay";
-import { makePlayer } from "./entities/player";
+import { makePlayer } from "./player";
 import { SCALE_FACTOR } from "./constants";
-import { makeScoreBox } from "./ui/scoreBox";
+import { makeScoreBox } from "./scoreBox";
 import { computeRank } from "./utils";
-import { saveSystem } from "./systems/save";
+import { saveSystem } from "./save";
 import { appWindow } from "@tauri-apps/api/window";
-import { loadAssets } from "./loadAssets";
 
 const k = kaplay({
   width: 1280,
@@ -15,21 +14,26 @@ const k = kaplay({
   scale: 2,
 });
 
-async function game() {
-  document.addEventListener("keydown", async (ev) => {
-    if (ev.code === "F11") {
-      if (await appWindow.isFullscreen()) {
-        await appWindow.setFullscreen(false);
-      } else {
-        await appWindow.setFullscreen(true);
-      }
+k.loadSprite("kriby", "./kriby.png");
+
+k.loadSprite("obstacles", "./obstacles.png");
+k.loadSprite("background", "./background.png");
+k.loadSprite("clouds", "./clouds.png");
+k.loadSound("jump", "./jump.wav");
+k.loadSound("hurt", "./hurt.wav");
+k.loadSound("confirm", "./confirm.wav");
+
+addEventListener("keydown", async (ev) => {
+  if (ev.code === "F11") {
+    if (await appWindow.isFullscreen()) {
+      await appWindow.setFullscreen(false);
+    } else {
+      await appWindow.setFullscreen(true);
     }
-  });
+  }
+});
 
-  loadAssets(k);
-
-  const level1Data = await (await fetch("./collidersData.json")).json();
-
+async function game() {
   k.scene("start", async () => {
     k.add([
       k.rect(k.width(), k.height()),
@@ -93,7 +97,8 @@ async function game() {
   k.scene("main", async () => {
     let score = 0;
 
-    const level1Colliders = level1Data.data;
+    const levelData = await (await fetch("./collidersData.json")).json();
+    const levelColliders = levelData.data;
 
     k.add([
       k.rect(k.width(), k.height()),
@@ -103,11 +108,11 @@ async function game() {
 
     k.setGravity(2500);
 
-    const map = k.add([k.pos(0, -50), k.scale(SCALE_FACTOR)]);
+    const level = k.add([k.pos(0, -50), k.scale(SCALE_FACTOR)]);
 
-    map.add([k.sprite("background"), k.pos()]);
+    level.add([k.sprite("background"), k.pos()]);
 
-    const clouds = map.add([k.sprite("clouds"), k.pos(), { speed: 5 }]);
+    const clouds = level.add([k.sprite("clouds"), k.pos(), { speed: 5 }]);
     clouds.onUpdate(() => {
       clouds.move(clouds.speed, 0);
       if (clouds.pos.x > 700) {
@@ -115,7 +120,7 @@ async function game() {
       }
     });
 
-    const platforms = map.add([
+    const platforms = level.add([
       k.sprite("obstacles"),
       k.pos(),
       k.area(),
@@ -133,7 +138,7 @@ async function game() {
       score += 1;
     });
 
-    for (const collider of level1Colliders) {
+    for (const collider of levelColliders) {
       platforms.add([
         k.area({
           shape: new k.Rect(k.vec2(0), collider.width, collider.height),
@@ -160,8 +165,6 @@ async function game() {
       "obstacle",
     ]);
 
-    // we create the player as an independent game obj instead of child of map
-    // because of kaplay's physics system being buggy
     const player = k.add(makePlayer(k));
     player.pos = k.vec2(600, 250);
     player.setControls();

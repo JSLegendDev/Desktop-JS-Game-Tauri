@@ -1,5 +1,5 @@
-import { saveSystem } from "../systems/save";
-import { computeRank } from "../utils";
+import { saveSystem } from "./save";
+import { computeRank } from "./utils";
 
 export async function makeScoreBox(k, pos, score) {
   saveSystem.load();

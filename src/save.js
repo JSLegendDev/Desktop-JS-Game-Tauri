@@ -10,14 +10,14 @@ function makeSaveSystem(savefileName) {
   return {
     data: {},
     async save() {
-      await writeTextFile("save.json", JSON.stringify(this.data), {
+      await writeTextFile(savefileName, JSON.stringify(this.data), {
         dir: BaseDirectory.AppLocalData,
       });
     },
     async load() {
       try {
         this.data = JSON.parse(
-          await readTextFile("save.json", {
+          await readTextFile(savefileName, {
             dir: BaseDirectory.AppLocalData,
           })
         );
