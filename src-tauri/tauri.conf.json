@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build",
+    "beforeDevCommand": "npm run dev:browser",
+    "beforeBuildCommand": "npm run build:browser",
     "devPath": "http://localhost:1420",
     "distDir": "../dist"
   },

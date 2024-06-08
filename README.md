@@ -6,21 +6,21 @@ Flappy bird style game made with the Kaplay library and Tauri. It features a bas
 
 Supports multiple inputs (Mouse, Keyboard and Gamepad)
 
-Download for Windows here : https://jslegend.itch.io/kriby
+Download for Windows here : [https://jslegend.itch.io/kriby](https://jslegend.itch.io/kriby)
 
 Tutorial on how to build this : (TBD)
 
 ## How to run?
 
-1. Make sure you have the prerequisites : https://tauri.app/v1/guides/getting-started/prerequisites
+1. Make sure you have the prerequisites : [https://tauri.app/v1/guides/getting-started/prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites)
 2. Make sure you have Node.js installed.
 3. Clone the repo.
 4. Once in the repo, do `npm install` to install the required dependencies.
-5. Run the project in dev by doing `npm run tauri dev`.
+5. Run the project in dev by doing `npm run dev`.
 
 ## How to distribute the project as an installable app?
 
-1. Build the project by doing `npm run tauri build`.
+1. Build the project by doing `npm run build`.
 2. After the build is complete go to `target > release > bundle > msi`.
 3. Distribute the installer on sites like itch.io or on Steam.
 
@@ -34,7 +34,7 @@ For this project, I opted to use Tauri instead of Electron for a few reasons :
 - Final executable for the game is lightweight (In this case 6 MB). Electron produces bloated executables.
 - By packaging a Chrome browser, Electron can guarantee that the app will render the same way across platforms. This is not the case with Tauri since it uses the Webview of the platform the app is running on. Since the expectation for games is that they run on Windows, this drawback of Tauri doesn't affect this project.
 
-Learn more about Tauri : https://tauri.app/
+Learn more about Tauri : [https://tauri.app/](https://tauri.app/)
 
 ## Why Kaplay?
 
@@ -42,4 +42,4 @@ Kaplay is a very high-level library for making games. It allows you to make game
 
 It was previously called Kaboom. I have plenty of tutorials on my YouTube channel : https://www.youtube.com/@jslegenddev
 
-Learn more about Kaplay : https://kaplayjs.com/
+Learn more about Kaplay : [https://kaplayjs.com/](https://kaplayjs.com/)
