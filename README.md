@@ -13,7 +13,7 @@ Tutorial on how to build this : (TBD)
 ## How to run?
 
 1. Make sure you have the prerequisites : https://tauri.app/v1/guides/getting-started/prerequisites
-2. Make sure have Node.js installed.
+2. Make sure you have Node.js installed.
 3. Clone the repo.
 4. Once in the repo, do `npm install` to install the required dependencies.
 5. Run the project in dev by doing `npm run tauri dev`.
