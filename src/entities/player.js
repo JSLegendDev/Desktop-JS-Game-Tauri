@@ -2,7 +2,7 @@ import { SCALE_FACTOR } from "../constants";
 
 export function makePlayer(k) {
   return k.make([
-    k.sprite("spritesheet", { frame: 0 }),
+    k.sprite("kriby"),
     k.area({ shape: new k.Rect(k.vec2(0, 1.5), 8, 5) }),
     k.anchor("center"),
     k.body({ jumpForce: 600 }),

@@ -5,6 +5,7 @@ import { makeScoreBox } from "./ui/scoreBox";
 import { computeRank } from "./utils";
 import { saveSystem } from "./systems/save";
 import { appWindow } from "@tauri-apps/api/window";
+import { loadAssets } from "./loadAssets";
 
 const k = kaplay({
   width: 1280,
@@ -25,21 +26,11 @@ async function game() {
     }
   });
 
-  const level1Data = await (await fetch("./maps/collidersData.json")).json();
+  loadAssets(k);
 
-  k.loadSprite("spritesheet", "./spritesheet.png", {
-    sliceX: 18,
-    sliceY: 5,
-  });
+  const level1Data = await (await fetch("./collidersData.json")).json();
 
-  k.loadSprite("obstacles", "./maps/obstacles.png");
-  k.loadSprite("background", "./maps/background.png");
-  k.loadSprite("clouds", "./maps/clouds.png");
-  k.loadSound("jump", "./jump.wav");
-  k.loadSound("hurt", "./hurt.wav");
-  k.loadSound("confirm", "./confirm.wav");
-
-  async function startScene() {
+  k.scene("start", async () => {
     k.add([
       k.rect(k.width(), k.height()),
       k.color(k.Color.fromHex("#d7f2f7")),
@@ -62,7 +53,6 @@ async function game() {
 
     map.add([k.sprite("obstacles"), k.pos(), k.area(), { speed: 100 }]);
 
-    //await saveSystem.createSaveDataFolder();
     await saveSystem.load();
     if (!saveSystem.data.maxScore) {
       saveSystem.data.maxScore = 0;
@@ -98,9 +88,9 @@ async function game() {
     k.onKeyPress("space", goToGame);
 
     k.onGamepadButtonPress("south", goToGame);
-  }
+  });
 
-  async function mainScene() {
+  k.scene("main", async () => {
     let score = 0;
 
     const level1Colliders = level1Data.data;
@@ -188,10 +178,7 @@ async function game() {
     player.onUpdate(() => {
       k.camPos(player.pos.x, 400);
     });
-  }
-
-  k.scene("start", startScene);
-  k.scene("main", mainScene);
+  });
 
   k.go("start");
 }
