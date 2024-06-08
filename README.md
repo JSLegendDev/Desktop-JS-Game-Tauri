@@ -24,15 +24,15 @@ Tutorial on how to build this : (TBD)
 2. After the build is complete go to `target > release > bundle > msi`.
 3. Distribute the installer on sites like itch.io or on Steam.
 
-_Note : It's important to distribute the installer and not the .exe available `target > release >  Your Game.exe` because Tauri relies on WebView2 to be present on the system.The installer will make sure to download and install it on the users system if not already there. This is not the case for the .exe._
+_Note : It's important to distribute the installer and not the .exe available in `target > release >  Your Game.exe` because Tauri relies on WebView2 to be present on the system.The installer will make sure to download and install it on the user's system if not already there. This is not the case for the .exe._
 
 ## Why Tauri?
 
 For this project, I opted to use Tauri instead of Electron for a few reasons :
 
-- Easier to setup than Electron.
+- Easier to setup than Electron. (You can use Tauri's JS api so no need to learn or use Rust)
 - Final executable for the game is lightweight (In this case 6 MB). Electron produces bloated executables.
-- By packaging a Chrome browser, Electron can guarantee that the app will render the same way across platforms. This is not the case with Tauri. Since the expectation for games is that they run on Windows, this drawback of Tauri doesn't affect this project.
+- By packaging a Chrome browser, Electron can guarantee that the app will render the same way across platforms. This is not the case with Tauri since it uses the Webview of the platform the app is running on. Since the expectation for games is that they run on Windows, this drawback of Tauri doesn't affect this project.
 
 Learn more about Tauri : https://tauri.app/
 
