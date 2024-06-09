@@ -10,7 +10,7 @@ export async function makeScoreBox(k, pos, score) {
   }
 
   const container = k.make([
-    k.rect(500, 500),
+    k.rect(600, 500),
     k.pos(pos),
     k.color(k.Color.fromHex("#d7f2f7")),
     k.area(),
@@ -20,31 +20,31 @@ export async function makeScoreBox(k, pos, score) {
   ]);
 
   container.add([
-    k.text(`Your best score : ${saveSystem.data.maxScore}`),
+    k.text(`Previous best score : ${saveSystem.data.maxScore}`),
     k.color(k.Color.fromHex("#14638e")),
     k.area(),
-    k.pos(-220, -200),
+    k.pos(-240, -200),
   ]);
 
   container.add([
-    k.text(`Your score: ${score}`),
+    k.text(`Current score: ${score}`),
     k.color(k.Color.fromHex("#14638e")),
     k.area(),
-    k.pos(-220, -150),
+    k.pos(-240, -150),
   ]);
 
   container.add([
-    k.text(`Your current rank : ${computeRank(score)}`),
+    k.text(`Current rank : ${computeRank(score)}`),
     k.color(k.Color.fromHex("#14638e")),
     k.area(),
-    k.pos(-220, 50),
+    k.pos(-240, 50),
   ]);
 
   container.add([
-    k.text(`Your best rank : ${computeRank(saveSystem.data.maxScore)}`),
+    k.text(`Previous best rank : ${computeRank(saveSystem.data.maxScore)}`),
     k.color(k.Color.fromHex("#14638e")),
     k.area(),
-    k.pos(-220, 0),
+    k.pos(-240, 0),
   ]);
 
   const restartBtn = container.add([
