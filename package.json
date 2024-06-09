@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.5.6",
-    "kaplay": "^3001.0.0-alpha.9"
+    "kaplay": "^3000.1.17"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.5.14",
