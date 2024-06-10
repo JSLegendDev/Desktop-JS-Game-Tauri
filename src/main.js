@@ -26,9 +26,10 @@ addEventListener("keydown", async (key) => {
   if (key.code === "F11") {
     if (await appWindow.isFullscreen()) {
       await appWindow.setFullscreen(false);
-    } else {
-      await appWindow.setFullscreen(true);
+      return;
     }
+
+    appWindow.setFullscreen(true);
   }
 });
 
