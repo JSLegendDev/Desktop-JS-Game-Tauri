@@ -22,8 +22,8 @@ k.loadSound("jump", "./jump.wav");
 k.loadSound("hurt", "./hurt.wav");
 k.loadSound("confirm", "./confirm.wav");
 
-addEventListener("keydown", async (ev) => {
-  if (ev.code === "F11") {
+addEventListener("keydown", async (key) => {
+  if (key.code === "F11") {
     if (await appWindow.isFullscreen()) {
       await appWindow.setFullscreen(false);
     } else {
