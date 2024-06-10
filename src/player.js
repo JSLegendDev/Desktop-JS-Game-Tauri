@@ -18,7 +18,7 @@ export function makePlayer(k) {
           this.jump();
         };
 
-        this.inputControllers.push(this.onKeyPress("space", jumpLogic));
+        this.inputControllers.push(k.onKeyPress("space", jumpLogic));
         this.inputControllers.push(k.onClick(jumpLogic));
         this.inputControllers.push(k.onGamepadButtonPress("south", jumpLogic));
       },
