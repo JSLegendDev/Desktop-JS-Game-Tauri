@@ -97,11 +97,11 @@ k.scene("main", async () => {
 
   k.setGravity(2500);
 
-  const level = k.add([k.pos(0, -50), k.scale(SCALE_FACTOR)]);
+  const map = k.add([k.pos(0, -50), k.scale(SCALE_FACTOR)]);
 
-  level.add([k.sprite("background"), k.pos()]);
+  map.add([k.sprite("background"), k.pos()]);
 
-  const clouds = level.add([k.sprite("clouds"), k.pos(), { speed: 5 }]);
+  const clouds = map.add([k.sprite("clouds"), k.pos(), { speed: 5 }]);
   clouds.onUpdate(() => {
     clouds.move(clouds.speed, 0);
     if (clouds.pos.x > 700) {
@@ -109,7 +109,7 @@ k.scene("main", async () => {
     }
   });
 
-  const platforms = level.add([
+  const platforms = map.add([
     k.sprite("obstacles"),
     k.pos(),
     k.area(),
