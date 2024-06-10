@@ -139,21 +139,9 @@ k.scene("main", async () => {
     ]);
   }
 
-  k.add([
-    k.rect(k.width(), 50),
-    k.pos(0, -100),
-    k.area(),
-    k.fixed(),
-    "obstacle",
-  ]);
+  k.add([k.rect(k.width(), 50), k.pos(0, -100), k.area(), "obstacle"]);
 
-  k.add([
-    k.rect(k.width(), 50),
-    k.pos(0, 1000),
-    k.area(),
-    k.fixed(),
-    "obstacle",
-  ]);
+  k.add([k.rect(k.width(), 50), k.pos(0, 1000), k.area(), "obstacle"]);
 
   const player = k.add(makePlayer(k));
   player.pos = k.vec2(600, 250);

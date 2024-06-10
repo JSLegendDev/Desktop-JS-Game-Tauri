@@ -16,7 +16,6 @@ export async function makeScoreBox(k, pos, score) {
     k.area(),
     k.anchor("center"),
     k.outline(4, k.Color.fromHex("#14638e")),
-    k.fixed(),
   ]);
 
   container.add([
