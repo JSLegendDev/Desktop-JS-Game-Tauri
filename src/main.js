@@ -55,7 +55,6 @@ k.scene("start", async () => {
   if (!saveSystem.data.maxScore) {
     saveSystem.data.maxScore = 0;
     await saveSystem.save();
-    await saveSystem.load();
   }
 
   const player = k.add(makePlayer(k));

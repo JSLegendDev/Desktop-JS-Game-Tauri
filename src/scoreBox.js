@@ -2,7 +2,7 @@ import { saveSystem } from "./save";
 import { computeRank } from "./utils";
 
 export async function makeScoreBox(k, pos, score) {
-  saveSystem.load();
+  await saveSystem.load();
 
   if (score > saveSystem.data.maxScore) {
     saveSystem.data.maxScore = score;
