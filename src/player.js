@@ -11,19 +11,21 @@ export function makePlayer(k) {
     {
       isDead: false,
       speed: 600,
-      keyControllers: [],
+      inputControllers: [],
       setControls() {
         const jumpLogic = () => {
           k.play("jump");
           this.jump();
         };
 
-        this.keyControllers.push(this.onKeyPress("space", jumpLogic));
-        this.keyControllers.push(k.onClick(jumpLogic));
-        this.keyControllers.push(k.onGamepadButtonPress("south", jumpLogic));
+        this.inputControllers.push(this.onKeyPress("space", jumpLogic));
+        this.inputControllers.push(k.onClick(jumpLogic));
+        this.inputControllers.push(k.onGamepadButtonPress("south", jumpLogic));
       },
       disableControls() {
-        this.keyControllers.forEach((keyController) => keyController.cancel());
+        this.inputControllers.forEach((inputController) =>
+          inputController.cancel()
+        );
       },
     },
   ]);
